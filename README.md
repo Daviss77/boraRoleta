@@ -1,82 +1,165 @@
-# boraRoleta
-Trabalho 4ºSemestre Faculdade SENAC
+# BoraRoleta
 
-## Desenvolvimento — Perfis e variáveis de ambiente
+Sistema web para descoberta de estabelecimentos usando Google Maps API.
 
-Este projeto usa perfis Spring para alternar entre ambientes:
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-- `prod` — configurações de produção (MySQL). Arquivo: `src/main/resources/application-prod.properties`.
-- `test` — configuração para testes/desenvolvimento com H2 em memória. Arquivo: `src/main/resources/application-test.properties`.
+## Funcionalidades
 
-Não force perfis dentro do `application.properties`. Use variáveis de ambiente ou argumentos de linha de comando para selecionar o perfil.
+- Cadastro e gerenciamento de usuarios
+- Cadastro e busca de estabelecimentos
+- Integracao com Google Maps API
+- Busca por categoria e proximidade
+- Sistema de avaliacoes
+- Sugestoes aleatorias de locais
+- API REST com validacoes
+- Tratamento centralizado de erros
 
-Há scripts úteis para Windows no repositório:
+## Arquitetura em camadas
 
-- `setenv.bat` — define `DB_USERNAME` e `DB_PASSWORD` via `setx` (persiste para o usuário). Exemplo:
+A aplicacao segue arquitetura em camadas para manter responsabilidades separadas e facilitar manutencao.
 
-	```cmd
-	setenv.bat myuser mypass
-	```
-
-- `setenv.ps1` — PowerShell; setar na sessão ou persistir com `-Persist`:
-
-	```powershell
-	.\setenv.ps1 -Username myuser -Password mypass -Persist
-	# ou apenas para sessão atual
-	.\setenv.ps1 -Username myuser -Password mypass
-	```
-
-- `.env.example` — modelo com variáveis; copie para `.env` localmente se quiser (o `.env` está no `.gitignore`).
-
-## Rodando localmente
-
-1. Compilar:
-
-```powershell
-./mvnw.cmd clean package
+```text
+br.edu.senac.boraroleta/
+  controller/        # Endpoints REST e paginas web
+  service/           # Regra de negocio
+  repository/        # Acesso a dados com Spring Data JPA
+  model/             # Entidades JPA
+  dto/               # Objetos de transferencia de dados
+  exception/         # Excecoes e handlers
+  config/            # Configuracoes adicionais
 ```
 
-2. Rodar com H2 (perfil `test`):
+## Tecnologias utilizadas
 
+### Backend
+- Java 17
+- Spring Boot 3.5.7
+- Spring Data JPA
+- Spring Web
+- Spring Validation
+- Hibernate ORM
+- Spring Boot DevTools (ambiente local)
+
+### Banco de dados
+- MySQL 8+ (desenvolvimento e producao)
+- H2 em memoria (perfil de testes)
+
+### Ferramentas de suporte
+- Maven Wrapper (`mvnw.cmd`)
+- Lombok
+- MapStruct
+- Docker (opcional para provisionar dependencias)
+- VS Code ou IntelliJ IDEA (suporte recomendado)
+
+## Requisitos
+
+- Java 17 instalado e configurado no PATH
+- MySQL 8 ou acesso a uma instancia compativel
+- Conta na Google Cloud com chave da Google Maps API
+- Git para controle de versao
+
+## Configuracao de ambiente
+
+1. Copie o arquivo `.env.example` para `.env`.
+2. Informe as variaveis de banco (`DB_USERNAME`, `DB_PASSWORD`, `DB_URL` quando necessario) e a `GOOGLE_MAPS_API_KEY`.
+3. Carregue as variaveis antes de executar o projeto:
+   - Windows PowerShell: `./setenv.ps1`
+   - Windows CMD: `setenv.bat`
+4. Verifique se o banco `boraroleta` existe e se as credenciais possuem privilegios de leitura e escrita.
+
+## Perfis ativos
+
+- `dev`: usa banco local e recursos de desenvolvimento.
+- `test`: utiliza H2 em memoria para testes automatizados.
+- `prod`: conecta ao banco MySQL configurado e exige variaveis externas.
+
+Defina o perfil com a variavel de ambiente `SPRING_PROFILES_ACTIVE`.
+
+## Executando o projeto
+
+### Ambiente de desenvolvimento
 ```powershell
-./mvnw.cmd --% spring-boot:run -Dspring-boot.run.profiles=test
+.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-Abra depois:
-
-- App: `http://localhost:8080`
-- H2 Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`, user `sa`, password em branco)
-
-3. Rodar com MySQL (perfil `prod`): defina `DB_USERNAME` e `DB_PASSWORD` (via `setenv.*` ou variáveis do sistema) e então:
-
+### Ambiente de producao
 ```powershell
-./mvnw.cmd --% spring-boot:run -Dspring-boot.run.profiles=prod
+$env:SPRING_PROFILES_ACTIVE = "prod"
+.\mvnw.cmd spring-boot:run
 ```
 
-## Rodando na sua IDE
+Para produzir um pacote executavel:
+```powershell
+.\mvnw.cmd clean package
+```
+O arquivo final sera gerado em `target/`.
 
-### VS Code
+## Testes
 
-1. Abra a pasta do projeto no VS Code.
-2. Instale as extensões: `Language Support for Java(TM) by Red Hat`, `Debugger for Java`, `Spring Boot Extension Pack`.
-3. Configure variáveis de ambiente (opcional): use `setenv.ps1` ou configure `launch.json` no `.vscode/` com `env` e, se preferir argumentos, inclua `"-Dspring-boot.run.profiles=test"` (as aspas mantêm o argumento intacto no PowerShell).
-4. Use o comando `Spring Boot Dashboard` (ícone do Spring) e clique em ▶️ sobre `BoraRoletaApplication`, ou execute a task do Maven `spring-boot:run` no terminal integrado com `.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=test"`.
+Execute toda a suite de testes:
+```powershell
+.\mvnw.cmd test
+```
 
-### IntelliJ IDEA
+Gerar relatorio de cobertura (se configurado no `pom.xml`):
+```powershell
+.\mvnw.cmd test jacoco:report
+```
 
-1. Abra o projeto (Import Maven Project se solicitado).
-2. Configure as variáveis de ambiente em `Run -> Edit Configurations...` no template `Spring Boot` (adicione `SPRING_PROFILES_ACTIVE=test` ou `DB_USERNAME`/`DB_PASSWORD` conforme necessário).
-3. Rode a aplicação clicando no ícone ▶️ da configuração criada.
+## Estrutura do projeto
 
-### Eclipse / STS
+```text
+boraRoleta/
+  src/
+    main/
+      java/br/edu/senac/boraroleta/
+        controller/
+        service/
+        repository/
+        model/
+        dto/
+        exception/
+        config/
+        BoraRoletaApplication.java
+      resources/
+        static/
+          css/
+          js/
+        templates/
+        application.properties
+        application-prod.properties
+        application-test.properties
+    test/
+      java/br/edu/senac/boraroleta/
+  .env.example
+  pom.xml
+  README.md
+  setenv.bat
+  setenv.ps1
+```
 
-1. Import -> Existing Maven Projects -> selecione a pasta do projeto.
-2. Crie uma Run Configuration `Spring Boot App` (ou `Java Application` apontando para `com.example.demo.BoraRoletaApplication`).
-3. Em `Environment` adicione `SPRING_PROFILES_ACTIVE=test` ou `DB_USERNAME`/`DB_PASSWORD`.
-4. Execute.
+## Contribuicao
 
-## Boas práticas
+1. Faca um fork do repositorio.
+2. Crie uma branch (`git checkout -b feature/nome-da-feature`).
+3. Faca commits objetivos (`git commit -m "Adiciona nova funcionalidade"`).
+4. Envie a branch (`git push origin feature/nome-da-feature`).
+5. Abra um Pull Request descrevendo as alteracoes.
 
-- Nunca comite credenciais. Use `.env` local ou variáveis de ambiente (os scripts acima ajudam nisso).
-- Não exponha o H2 console em produção. `application-prod.properties` tem `spring.h2.console.enabled=false`.
-- Verifique o `.gitignore` antes de commitar.
+## Licenca
+
+Este projeto esta licenciado sob a licenca MIT. Consulte o arquivo [LICENSE](LICENSE) para detalhes.
+
+## Autoria
+
+Equipe BoraRoleta - Trabalho academico SENAC.
+
+## Agradecimentos
+
+- Professores e orientadores do SENAC
+- Comunidade Spring Boot
+- Google Maps Platform
+- Contribuidores do projeto

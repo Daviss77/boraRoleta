@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package br.edu.senac.boraroleta.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;

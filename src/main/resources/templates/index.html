@@ -15,11 +15,11 @@
 <div id="footer"></div>
 
 <script th:src="@{/js/buttons.js}"></script>
-<script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABAYhUfkDh54w90G7QAr1pmNcw3bldvy4&libraries=places"
+<script th:if="${@environment.getProperty('google.maps.api-key')}"
+        th:src="${'https://maps.googleapis.com/maps/api/js?key=' + @environment.getProperty('google.maps.api-key') + '&libraries=places'}"
         async
-        defer
-></script>
+        defer>
+</script>
 
 <script th:src="@{/js/apiMaps.js}"></script>
 </body>
