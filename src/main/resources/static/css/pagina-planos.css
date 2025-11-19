@@ -1,0 +1,156 @@
+/* CSS da página de Planos - sem afetar estilos globais */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.planos-page {
+    background-color: #2A2040;
+    min-height: calc(100vh - 45px);
+    padding: 40px 30px;
+    position: relative;
+}
+
+.titulo-planos {
+    text-align: center;
+    color: #FFD700;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 48px;
+    margin: 0 0 30px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 6px;
+}
+
+.container-planos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.card-plano {
+    background-color: #E8E8E8;
+    border-radius: 12px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 420px;
+}
+
+.card-plano:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.header-plano {
+    border-radius: 8px 8px 0 0;
+    padding: 16px;
+    text-align: center;
+    margin: -24px -20px 20px -20px;
+}
+
+.aventureiro .header-plano {
+    background-color: #A0826D;
+}
+
+.rolezeiro .header-plano {
+    background-color: #A9A9A9;
+}
+
+.dono .header-plano {
+    background-color: #E6DB74;
+}
+
+.header-plano h2 {
+    color: #000;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.corpo-plano {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.preco-plano {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.valor-plano {
+    font-size: 36px;
+    font-weight: bold;
+    color: #000;
+}
+
+.periodo-plano {
+    font-size: 18px;
+    color: #555;
+}
+
+.lista-beneficios {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    flex: 1;
+    font-family: Arial, sans-serif;
+}
+
+.lista-beneficios li {
+    color: #333;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+    text-align: left;
+}
+
+.lista-beneficios li:before {
+    content: "•";
+    color: #7B2CBF;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.botao-assinar {
+    background-color: #7B2CBF;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    margin-top: auto;
+    font-family: Arial, sans-serif;
+}
+
+.botao-assinar:hover {
+    background-color: #5A1F91;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .container-planos {
+        grid-template-columns: 1fr;
+    }
+    
+    .planos-page {
+        padding: 30px 20px;
+    }
+    
+    .titulo-planos {
+        font-size: 36px;
+    }
+}

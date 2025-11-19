@@ -10,7 +10,3 @@ fetch("/views/templates/footer.html")
 fetch("/views/home.html")
     .then(response => response.text())
     .then(data => document.getElementById("home").innerHTML = data);
-
-fetch("/views/plans.html")
-    .then(response => response.text())
-    .then(data => document.getElementById("plans").innerHTML = data);
