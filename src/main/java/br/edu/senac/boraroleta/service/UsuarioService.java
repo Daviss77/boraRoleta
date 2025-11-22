@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class UsuarioService {
@@ -95,5 +97,36 @@ public class UsuarioService {
     public void deletar(Long id) {
         Usuario usuario = buscarPorId(id);
         repository.delete(usuario);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> buscar(String q, String nome, String email, String cpf) {
+        // Estratégia: prioriza filtros específicos; se apenas 'q' vier, busca em nome/email e cpf exato
+        if (cpf != null && !cpf.isBlank()) {
+            return repository.findByCpf(cpf).map(java.util.List::of).orElseGet(java.util.List::of);
+        }
+        if (email != null && !email.isBlank()) {
+            return repository.findByEmailContainingIgnoreCase(email);
+        }
+        if (nome != null && !nome.isBlank()) {
+            return repository.findByNomeContainingIgnoreCase(nome);
+        }
+        if (q != null && !q.isBlank()) {
+            // se 'q' parece cpf, tenta cpf
+            var possivelCpf = q.replaceAll("[^0-9]", "");
+            var resultado = new java.util.ArrayList<Usuario>();
+            if (possivelCpf.length() >= 11) {
+                repository.findByCpf(q).ifPresent(resultado::add);
+            }
+            // nome/email parciais
+            resultado.addAll(repository.findByNomeContainingIgnoreCase(q));
+            resultado.addAll(repository.findByEmailContainingIgnoreCase(q));
+            // remover duplicatas preservando ordem
+            Map<Long, Usuario> unique = new LinkedHashMap<>();
+            for (var u : resultado) unique.put(u.getId(), u);
+            return new java.util.ArrayList<>(unique.values());
+        }
+        // sem filtros, retorna todos
+        return listarTodos();
     }
 }

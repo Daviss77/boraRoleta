@@ -16,4 +16,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmail(String email);
     
     boolean existsByCpf(String cpf);
+
+    // Suporte a buscas parciais para Admin
+    java.util.List<Usuario> findByNomeContainingIgnoreCase(String nome);
+    java.util.List<Usuario> findByEmailContainingIgnoreCase(String email);
 }

@@ -55,5 +55,15 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Usuario>> buscar(
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "cpf", required = false) String cpf
+    ) {
+        List<Usuario> usuarios = service.buscar(q, nome, email, cpf);
+        return ResponseEntity.ok(usuarios);
+    }
     
 }

@@ -55,17 +55,29 @@ main {
     margin-bottom: 20px;
 }
 
-.usuarios {
-    margin-bottom: 15px;
-    background-color: white;
-    padding: 10px;
+/* Lista de usuários com colunas alinhadas */
+.usuarios { margin-bottom: 12px; }
+
+.usuarios-head,
+.usuarios-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr 2fr 1.5fr 80px; /* Nome | Email | CPF | Data | Ações */
+    column-gap: 16px;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 12px;
     border: 1px solid #aaa;
+    border-radius: 4px;
 }
 
-.entradas, .data {
+.usuarios-head {
+    background-color: #f2f2f2;
+    font-weight: 600;
+}
+
+.usuarios-row .acoes {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
+    justify-content: flex-end;
 }
 
 button {

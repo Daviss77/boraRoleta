@@ -1,81 +1,94 @@
-//apenas para exemplo.
+// Integração real com a API de usuários do backend
 
-const usuarios = [
-    { nome: "Maria", id: "333.333.333-33" },
-    { nome: "João", id: "444.444.444-44" }
-];
+let usuarios = [];
 
-function renderUsuarios() {
-    const container = document.getElementById("usuarios-container");
-    container.innerHTML = "";
+async function carregarUsuarios() {
+    const resp = await fetch('/api/usuarios');
+    if (!resp.ok) {
+        console.error('Falha ao carregar usuários');
+        return;
+    }
+    usuarios = await resp.json();
+    renderUsuarios(usuarios);
+}
 
-    //Essa parte do código gera uma nova DIV, para o novo usuário, havia colocado apenas para questão de teste, uma vez que os usuarios serão inseridos por meio do CRUD. A função de adicionar em si está no fim de código.
+function renderUsuarios(lista) {
+    const container = document.getElementById('usuarios-container');
+    container.innerHTML = '';
 
-    usuarios.forEach((usuario, index) => {
-        const divUsuario = document.createElement("div");
-        divUsuario.className = "usuarios";
-        divUsuario.innerHTML = `
-      <div class="entradas">
-        <span>Nome:</span>
-      </div>
-      <div class="data">
-        <span>${usuario.nome}</span><span>${usuario.id}</span>
-        <button class="edit" data-index="${index}">Editar</button>
-        <button class="delete" onclick="deletarUsuario(${index})">Del</button>
-      </div>
+    if (!lista || lista.length === 0) {
+        container.innerHTML = '<div class="usuarios">Nenhum usuário encontrado.</div>';
+        return;
+    }
+
+    // Cabeçalho (uma única vez)
+    const head = document.createElement('div');
+    head.className = 'usuarios-head';
+    head.innerHTML = `
+        <span>Nome</span>
+        <span>Email</span>
+        <span>CPF</span>
+        <span>Data de Criação</span>
+        <span></span>
     `;
-        container.appendChild(divUsuario);
+    container.appendChild(head);
+
+    // Linhas
+    lista.forEach((u) => {
+        const row = document.createElement('div');
+        row.className = 'usuarios-row';
+        const dataCriacao = u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : '-';
+        row.innerHTML = `
+            <span>${u.nome ?? ''}</span>
+            <span>${u.email ?? ''}</span>
+            <span>${u.cpf ?? ''}</span>
+            <span>${dataCriacao}</span>
+            <div class="acoes">
+                <button class="delete" data-id="${u.id}">Del</button>
+            </div>
+        `;
+        container.appendChild(row);
     });
 
-
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            editarUsuario(index);
+    container.querySelectorAll('button.delete').forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+            const id = ev.currentTarget.getAttribute('data-id');
+            const confirmacao = confirm('Deseja remover o usuário selecionado?');
+            if (!confirmacao) return;
+            const resp = await fetch(`/api/usuarios/${id}`, { method: 'DELETE' });
+            if (resp.ok) {
+                await carregarUsuarios();
+            } else {
+                alert('Falha ao deletar o usuário.');
+            }
         });
     });
 }
 
-//essa parte do código faz com que o botão de editar fncione, dando a opção ao adm editar o ID e o nome.
-
-function editarUsuario(index) {
-    const usuario = usuarios[index];
-    const novoNome = prompt("Editar nome do usuário:", usuario.nome);
-    const novoId = prompt("Editar ID do usuário:", usuario.id);
-
-    if (novoNome && novoId) {
-        usuarios[index] = { nome: novoNome, id: novoId };
-        renderUsuarios();
+async function buscarUsuarios() {
+    const q = document.getElementById('busca').value.trim();
+    if (!q) {
+        renderUsuarios(usuarios);
+        return;
+    }
+    const url = `/api/usuarios/search?q=${encodeURIComponent(q)}`;
+    const resp = await fetch(url);
+    if (resp.ok) {
+        const data = await resp.json();
+        renderUsuarios(data);
     } else {
-        alert("Nome e ID são obrigatórios.");
+        alert('Erro ao buscar usuários');
     }
 }
-
-//Essa parte do código é responsável por deletar o user.
-
-function deletarUsuario(index) {
-    const confirmacao = confirm(`Deseja remover o usuário: ${usuarios[index].nome}?`);
-    if (confirmacao) {
-        usuarios.splice(index, 1);
-        renderUsuarios();
-    }
-}
-
 
 function adicionarUsuario() {
-    const nome = prompt("Digite o nome do novo usuário:");
-    const id = prompt("Digite o ID do novo usuário:");
-
-    if (nome && id) {
-        usuarios.push({ nome, id });
-        renderUsuarios();
-    } else {
-        alert("Nome e ID são obrigatórios.");
-    }
+    // Placeholder simples; cadastro real deveria postar para /api/usuarios
+    alert('Cadastro de usuário via UI não implementado ainda.');
 }
 
-// Adicionar o evento ao botão "Inserir"
-document.getElementById("inserir-usuario").addEventListener("click", adicionarUsuario);
-
-document.addEventListener("DOMContentLoaded", renderUsuarios);
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('inserir-usuario').addEventListener('click', adicionarUsuario);
+    document.getElementById('btn-buscar').addEventListener('click', buscarUsuarios);
+    document.getElementById('btn-recarregar').addEventListener('click', carregarUsuarios);
+    carregarUsuarios();
+});

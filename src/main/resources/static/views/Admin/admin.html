@@ -10,11 +10,12 @@
 
 <body>
 <header>
-    <div class="logo">logo</div>
+    <div class="logo"></div>
     <nav>
-        <a href="#">home</a>
-        <a href="#">planos</a>
-        <a href="#">perfil</a>
+        <a href="/">home</a>
+        <a href="/">planos</a>
+        <a href="/views/Login/login.html">perfil</a>
+        <a href="/views/Admin/admin.html">admin</a>
     </nav>
 </header>
 
@@ -26,13 +27,18 @@
 
     <section class="tabela-usuarios">
         <h2>Usuarios</h2>
+        <div style="display:flex; gap:8px; align-items:center; margin-bottom:12px;">
+            <input id="busca" type="text" placeholder="Buscar por nome, email ou CPF" style="flex:1; padding:8px;" />
+            <button id="btn-buscar" class="edit">Buscar</button>
+            <button id="btn-recarregar" class="edit">Recarregar</button>
+        </div>
         <div id="usuarios-container"></div>
         <button id="inserir-usuario" class="botao-inserir">Inserir</button>
     </section>
 </main>
 
 <footer>
-    <p>© GroupNGsZ ©</p>
+    <p>Sobre nós</p> <p>₢ GRUPO NGS BY SENAC ₢</p> <p>Trabalho com fins acadêmicos</p>
 </footer>
 
 <script src="/js/Admin/admin.js"></script>

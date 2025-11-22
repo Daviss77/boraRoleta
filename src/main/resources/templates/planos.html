@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/pagina-planos.css">
+    <title>PLANOS - DRINK CITY</title>
+</head>
+<body>
+<header>
+    <div id="menu"></div>
+</header>
+
+<main class="planos-page">
+    
+    <h1 class="titulo-planos">PLANOS</h1>
+    
+    <div class="container-planos">
+        <!-- Plano 1: O Aventureiro -->
+        <div class="card-plano aventureiro">
+            <div class="header-plano">
+                <h2>O Aventureiro</h2>
+            </div>
+            <div class="corpo-plano">
+                <div class="preco-plano">
+                    <span class="valor-plano">R$3,90</span>
+                    <span class="periodo-plano">/mês</span>
+                </div>
+                <ul class="lista-beneficios">
+                    <li>Acesso básico</li>
+                    <li>Filtro por localização / tipo de rolê</li>
+                    <li>Você pode favoritar os roles e receber lembretes</li>
+                    <li>Rolês em um raio de 5km de distância</li>
+                </ul>
+            </div>
+            <button class="botao-assinar">ASSINAR</button>
+        </div>
+
+        <!-- Plano 2: O Rolezeiro -->
+        <div class="card-plano rolezeiro">
+            <div class="header-plano">
+                <h2>O Rolezeiro</h2>
+            </div>
+            <div class="corpo-plano">
+                <div class="preco-plano">
+                    <span class="valor-plano">R$19,90</span>
+                    <span class="periodo-plano">/mês</span>
+                </div>
+                <ul class="lista-beneficios">
+                    <li>Acesso a festas exclusivas</li>
+                    <li>Sem anúncios</li>
+                    <li>Filtros avançados</li>
+                    <li>"Chat da galera"</li>
+                    <li>Sistema de pontos (Acumula bônus pra trocar por ingressos)</li>
+                    <li>Mapa ampliado (até 20km)</li>
+                </ul>
+            </div>
+            <button class="botao-assinar">ASSINAR</button>
+        </div>
+
+        <!-- Plano 3: O dono do Rolê -->
+        <div class="card-plano dono">
+            <div class="header-plano">
+                <h2>O dono do Rolê</h2>
+            </div>
+            <div class="corpo-plano">
+                <div class="preco-plano">
+                    <span class="valor-plano">R$39,90</span>
+                    <span class="periodo-plano">/mês</span>
+                </div>
+                <ul class="lista-beneficios">
+                    <li>Mapa ilimitado</li>
+                    <li>Perfil verificado</li>
+                    <li>Modo criador (Postar e divulgar)</li>
+                    <li>Análises de público.</li>
+                </ul>
+            </div>
+            <button class="botao-assinar">ASSINAR</button>
+        </div>
+    </div>
+</main>
+
+<div id="footer"></div>
+
+<script>
+fetch("/views/templates/menu.html")
+    .then(response => response.text())
+    .then(data => document.getElementById("menu").innerHTML = data);
+
+fetch("/views/templates/footer.html")
+    .then(response => response.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+
+document.querySelectorAll('.botao-assinar').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const plano = this.closest('.card-plano').querySelector('h2').textContent;
+        alert(`Você selecionou: ${plano}`);
+    });
+});
+</script>
+</body>
+</html>
