@@ -4,19 +4,25 @@
 $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot"
 $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 
-# Define variáveis do banco de dados
-$env:DB_USERNAME = "root"
-$env:DB_PASSWORD = "root"
+# Carrega variáveis do .env
+if (Test-Path ".env") {
+    Get-Content ".env" | ForEach-Object {
+        if ($_ -match '^([^#].+?)=(.+)$') {
+            $name = $matches[1].Trim()
+            $value = $matches[2].Trim()
+            Set-Item -Path "env:$name" -Value $value
+        }
+    }
+    Write-Host "Variáveis carregadas do .env" -ForegroundColor Green
+}
 
-# Define Google Maps API Key
-$env:GOOGLE_MAPS_API_KEY = "AIzaSyABAYhUfkDh54w90G7QAr1pmNcw3bldvy4"
-
-# Define perfil Spring
+# Define perfil Spring (pode ser sobrescrito pelo .env)
 $env:SPRING_PROFILES_ACTIVE = "prod"
 
 Write-Host "=== Variáveis de Ambiente Configuradas ===" -ForegroundColor Green
 Write-Host "JAVA_HOME: $env:JAVA_HOME"
 Write-Host "DB_USERNAME: $env:DB_USERNAME"
+Write-Host "GOOGLE_MAPS_API_KEY: $($env:GOOGLE_MAPS_API_KEY.Substring(0,20))..." -ForegroundColor Yellow
 Write-Host "SPRING_PROFILES_ACTIVE: $env:SPRING_PROFILES_ACTIVE"
 Write-Host ""
 
