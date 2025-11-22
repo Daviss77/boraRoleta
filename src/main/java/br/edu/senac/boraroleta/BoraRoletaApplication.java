@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * com controllers, services, repositories e models bem definidos.
  * </p>
  *
- * @author Grupo 47 - SENAC
+ * @author Equipe Bora Roleta - SENAC
  * @version 1.0
  * @since 2025
  */
