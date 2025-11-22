@@ -8,13 +8,16 @@ Sistema web para descoberta de estabelecimentos usando Google Maps API.
 
 ## Funcionalidades
 
-- Cadastro e gerenciamento de usuarios
+- Cadastro e gerenciamento de usuários
 - Cadastro e busca de estabelecimentos
-- Integracao com Google Maps API
-- Busca por categoria e proximidade
-- Sistema de avaliacoes
-- Sugestoes aleatorias de locais
-- API REST com validacoes
+- Integração com Google Maps API e Places API
+- Busca por categoria (Adegas, Pagodes, Barzinhos, Eventos) com raio de 2km
+- Geolocalização automática do usuário com fallback para São Paulo
+- Marcadores coloridos por categoria (vermelho, verde, azul, amarelo)
+- Auto-zoom do mapa para exibir todos os resultados
+- Sistema de avaliações (em desenvolvimento)
+- Sugestões aleatórias de locais
+- API REST com validações
 - Tratamento centralizado de erros
 
 ## Arquitetura em camadas
@@ -56,19 +59,74 @@ br.edu.senac.boraroleta/
 
 ## Requisitos
 
-- Java 17 instalado e configurado no PATH
-- MySQL 8 ou acesso a uma instancia compativel
-- Conta na Google Cloud com chave da Google Maps API
-- Git para controle de versao
+### Obrigatórios
+- **Java 17** ou superior instalado e configurado no PATH
+- **MySQL 8+** ou acesso a uma instância compatível
+- **Google Maps API Key** com os seguintes serviços habilitados:
+  - Maps JavaScript API
+  - Places API
+  - **Billing habilitado** na Google Cloud Console (obrigatório mesmo para uso gratuito)
+- **Git** para controle de versão
 
-## Configuracao de ambiente
+### Recomendados
+- Maven 3.8+ (ou usar o wrapper `mvnw.cmd` incluído)
+- VS Code com extensão Java ou IntelliJ IDEA
+- Postman ou similar para testar endpoints REST
 
-1. Copie o arquivo `.env.example` para `.env`.
-2. Informe as variaveis de banco (`DB_USERNAME`, `DB_PASSWORD`, `DB_URL` quando necessario) e a `GOOGLE_MAPS_API_KEY`.
-3. Carregue as variaveis antes de executar o projeto:
-   - Windows PowerShell: `./setenv.ps1`
-   - Windows CMD: `setenv.bat`
-4. Verifique se o banco `boraroleta` existe e se as credenciais possuem privilegios de leitura e escrita.
+## Configuração de ambiente
+
+### 1. Criar arquivo `.env`
+
+Na raiz do projeto, crie um arquivo `.env` com o seguinte conteúdo:
+
+```env
+# Banco de dados MySQL
+DB_USERNAME=seu_usuario_mysql
+DB_PASSWORD=sua_senha_mysql
+DB_URL=jdbc:mysql://localhost:3306/boraroleta
+
+# Google Maps API
+GOOGLE_MAPS_API_KEY=sua_chave_api_aqui
+```
+
+**IMPORTANTE:** O arquivo `.env` já está no `.gitignore` para evitar exposição de credenciais.
+
+### 2. Configurar banco de dados
+
+Crie o banco de dados no MySQL:
+
+```sql
+CREATE DATABASE boraroleta CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+As tabelas serão criadas automaticamente pelo Hibernate na primeira execução.
+
+### 3. Obter Google Maps API Key
+
+1. Acesse o [Google Cloud Console](https://console.cloud.google.com/)
+2. Crie um novo projeto ou selecione um existente
+3. Ative as APIs necessárias:
+   - Maps JavaScript API
+   - Places API
+4. Vá em "Credenciais" → "Criar credenciais" → "Chave de API"
+5. (Opcional) Restrinja a chave por domínio ou IP para segurança
+
+### 4. Executar script de ambiente
+
+**Windows PowerShell:**
+```powershell
+.\run.ps1
+```
+
+Este script:
+- Lê o arquivo `.env` e carrega as variáveis de ambiente
+- Inicia a aplicação Spring Boot automaticamente
+
+**Alternativa manual (CMD):**
+```cmd
+setenv.bat
+mvnw.cmd spring-boot:run
+```
 
 ## Perfis ativos
 
@@ -80,22 +138,92 @@ Defina o perfil com a variavel de ambiente `SPRING_PROFILES_ACTIVE`.
 
 ## Executando o projeto
 
-### Ambiente de desenvolvimento
+### Forma recomendada (Windows PowerShell)
+
+```powershell
+.\run.ps1
+```
+
+A aplicação estará disponível em: **http://localhost:8080**
+
+### Ambiente de desenvolvimento (manual)
+
 ```powershell
 .\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-### Ambiente de producao
+### Ambiente de produção
+
 ```powershell
 $env:SPRING_PROFILES_ACTIVE = "prod"
 .\mvnw.cmd spring-boot:run
 ```
 
-Para produzir um pacote executavel:
+### Gerar pacote executável
+
+Para produzir um JAR executável:
+
 ```powershell
-.\mvnw.cmd clean package
+.\mvnw.cmd clean package -DskipTests
 ```
-O arquivo final sera gerado em `target/`.
+
+O arquivo será gerado em `target/boraroleta-0.0.1-SNAPSHOT.jar`
+
+Para executá-lo:
+
+```powershell
+java -jar target/boraroleta-0.0.1-SNAPSHOT.jar
+```
+
+## Troubleshooting (Solução de problemas)
+
+### Erro: "This page didn't load Google Maps correctly"
+
+**Causa:** API Key inválida ou restrições de domínio/IP configuradas incorretamente.
+
+**Solução:**
+1. Verifique se a chave API está correta no arquivo `.env`
+2. Confirme que Maps JavaScript API e Places API estão ativas no projeto
+3. Revise as restrições de chave (domínio/IP) no Google Cloud Console
+
+### Erro: "Mapa ainda está carregando sua localização"
+
+**Causa:** Navegador bloqueou permissão de geolocalização.
+
+**Solução:**
+1. Clique no ícone de cadeado na barra de endereços
+2. Permita acesso à localização
+3. Recarregue a página (F5)
+
+Se o problema persistir, o sistema usará São Paulo como localização padrão automaticamente.
+
+### Erro: Variáveis do `.env` não são carregadas
+
+**Causa:** Script `run.ps1` não foi executado ou arquivo `.env` não existe.
+
+**Solução:**
+1. Verifique se o arquivo `.env` existe na raiz do projeto
+2. Execute `.\run.ps1` ao invés de `mvnw.cmd spring-boot:run` diretamente
+3. Confirme que as variáveis foram carregadas: `Get-ChildItem Env:GOOGLE_MAPS_API_KEY`
+
+### Erro: Conexão recusada ao MySQL
+
+**Causa:** MySQL não está rodando ou credenciais incorretas.
+
+**Solução:**
+1. Verifique se o MySQL está ativo: `Get-Service MySQL*`
+2. Teste conexão: `mysql -u seu_usuario -p`
+3. Confirme que o banco `boraroleta` existe
+4. Verifique credenciais no arquivo `.env`
+
+### Erro: Marcadores não aparecem no mapa
+
+**Causa:** A categoria selecionada não retornou resultados no raio de 2km.
+
+**Solução:**
+- Tente aumentar o raio de busca editando `apiMaps.js` (linha com `radius: 2000`)
+- Experimente outras categorias disponíveis
+- Verifique se está em uma área urbana com estabelecimentos cadastrados no Google
 
 ## Testes
 
