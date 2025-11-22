@@ -61,7 +61,7 @@ main {
 .usuarios-head,
 .usuarios-row {
     display: grid;
-    grid-template-columns: 2fr 3fr 2fr 80px; /* Nome | Email | CPF | Ações */
+    grid-template-columns: 2fr 3fr 2fr 1.5fr 80px; /* Nome | Email | CPF | Data | Ações */
     column-gap: 16px;
     align-items: center;
     background-color: #fff;

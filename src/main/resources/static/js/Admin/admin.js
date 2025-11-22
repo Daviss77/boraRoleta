@@ -28,6 +28,7 @@ function renderUsuarios(lista) {
         <span>Nome</span>
         <span>Email</span>
         <span>CPF</span>
+        <span>Data de Criação</span>
         <span></span>
     `;
     container.appendChild(head);
@@ -36,10 +37,12 @@ function renderUsuarios(lista) {
     lista.forEach((u) => {
         const row = document.createElement('div');
         row.className = 'usuarios-row';
+        const dataCriacao = u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : '-';
         row.innerHTML = `
             <span>${u.nome ?? ''}</span>
             <span>${u.email ?? ''}</span>
             <span>${u.cpf ?? ''}</span>
+            <span>${dataCriacao}</span>
             <div class="acoes">
                 <button class="delete" data-id="${u.id}">Del</button>
             </div>
