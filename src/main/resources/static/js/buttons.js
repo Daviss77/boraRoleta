@@ -3,7 +3,7 @@
  * Adiciona e remove a classe 'selecionado' dos botões quando clicados,
  * fornecendo feedback visual ao usuário sobre qual filtro está ativo.
  * 
- * @author Grupo 47 - SENAC
+ * @author Equipe Bora Roleta - SENAC
  * @version 1.0
  */
 

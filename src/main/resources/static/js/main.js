@@ -2,7 +2,7 @@
  * @fileoverview Script principal para carregamento dinâmico de componentes HTML.
  * Responsável por injetar menu, rodapé e conteúdo principal na página.
  * 
- * @author Grupo 47 - SENAC
+ * @author Equipe Bora Roleta - SENAC
  * @version 1.0
  */
 

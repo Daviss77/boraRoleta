@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * retornando os templates Thymeleaf correspondentes.
  * </p>
  *
- * @author Grupo 47 - SENAC
+ * @author Equipe Bora Roleta - SENAC
  * @version 1.0
  * @since 2025
  */

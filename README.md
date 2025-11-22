@@ -283,7 +283,7 @@ Este projeto esta licenciado sob a licenca MIT. Consulte o arquivo [LICENSE](LIC
 
 ## Autoria
 
-Equipe BoraRoleta - Trabalho academico SENAC.
+Equipe Bora Roleta - Trabalho acadêmico SENAC.
 
 ## Agradecimentos
 

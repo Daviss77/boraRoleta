@@ -328,6 +328,6 @@ Sempre validar no **backend** também. Validação front-end é apenas UX.
 
 ---
 
-**Autor:** Grupo 47 - SENAC  
+**Autor:** Equipe Bora Roleta - SENAC  
 **Versão:** 2.0  
 **Última atualização:** 2025

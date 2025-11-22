@@ -3,7 +3,7 @@
  * Gerencia inicialização do mapa, geolocalização, busca de estabelecimentos
  * por categoria (Adegas, Pagodes, Barzinhos, Eventos) e renderização de resultados.
  * 
- * @author Grupo 47 - SENAC
+ * @author Equipe Bora Roleta - SENAC
  * @version 2.0
  */
 
