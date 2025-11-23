@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Validação de formulário de cadastro.
+ * 
+ * Valida campos do formulário (nome, telefone, email, CPF, senha) com regex patterns
+ * e exibe mensagens de erro antes do envio.
+ * 
+ * @author Equipe Bora Roleta - SENAC 2025
+ * @version 1.0
+ */
+
 document.getElementById("formCadastro").addEventListener("submit", function (event){
     const nome = document.getElementById("name").value.trim();
     const telefone = document.getElementById("phone").value.trim();

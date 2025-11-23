@@ -13,8 +13,15 @@
         <div class="links">
             <a href="/">home</a>
             <a href="/planos">planos</a>
-            <a href="../../views/Login/login.html">perfil</a>
-            <a href="../../views/Admin/admin.html">admin</a>
+            <a id="link-admin" href="../../views/Admin/admin.html" style="display: none;">admin</a>
+        </div>
+        <div class="user-area">
+            <a id="link-login" href="../../views/Login/login.html" class="link-login">login</a>
+            <div id="user-info" class="user-info" style="display: none;">
+                <span id="user-greeting" class="user-greeting"></span>
+                <img id="user-avatar" class="user-avatar" src="" alt="Foto de perfil">
+                <button id="btn-logout" class="btn-logout">Sair</button>
+            </div>
         </div>
     </nav>
 </header>

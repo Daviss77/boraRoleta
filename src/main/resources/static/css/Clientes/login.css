@@ -12,6 +12,40 @@ body{
     background-color: #3f0f71;
     background-size: cover;
     background-position: center;
+    position: relative;
+}
+
+/* Botão Voltar */
+.btn-voltar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.btn-voltar:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateX(-5px);
+}
+
+.btn-voltar svg {
+    width: 20px;
+    height: 20px;
 }
 
 .container {
@@ -49,6 +83,19 @@ body{
     border-radius: 40px;
 }
 
+/* Esconder ícone de senha do navegador (Edge/Chrome) */
+.input-box input[type="password"]::-ms-reveal,
+.input-box input[type="password"]::-ms-clear {
+    display: none;
+}
+
+.input-box input[type="password"]::-webkit-credentials-auto-fill-button,
+.input-box input[type="password"]::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+}
+
 .input-box input::placeholder{
     color: white;
 }
@@ -59,10 +106,35 @@ body{
     margin: -15px 0 15px;
 }
 
+.toggle-password{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.toggle-password svg{
+    width: 24px;
+    height: 24px;
+    stroke: rgba(255, 255, 255, 0.8);
+    transition: stroke 0.3s ease;
+}
+
+.toggle-password:hover svg{
+    stroke: rgba(255, 255, 255, 1);
+}
+
+/* Manter compatibilidade com ID antigo */
 #toggleSenha{
     position: absolute;
-    right: 23px;
-    top: 56%;
+    right: 20px;
+    top: 50%;
     transform: translateY(-50%);
     transition: opacity 0.3s ease;
     cursor: pointer;
@@ -118,4 +190,17 @@ body{
 
 .sem-conta a:hover{
     text-decoration: underline;
+}
+
+/* Estilo para mensagem de erro */
+.mensagem-erro {
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid rgba(220, 53, 69, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
