@@ -8,17 +8,19 @@ Sistema web para descoberta de estabelecimentos usando Google Maps API.
 
 ## Funcionalidades
 
-- Cadastro e gerenciamento de usuários
-- Cadastro e busca de estabelecimentos
-- Integração com Google Maps API e Places API
-- Busca por categoria (Adegas, Pagodes, Barzinhos, Eventos) com raio de 2km
-- Geolocalização automática do usuário com fallback para São Paulo
-- Marcadores coloridos por categoria (vermelho, verde, azul, amarelo)
-- Auto-zoom do mapa para exibir todos os resultados
-- Sistema de avaliações (em desenvolvimento)
-- Sugestões aleatórias de locais
-- API REST com validações
-- Tratamento centralizado de erros
+- **Sistema de Autenticação** - Login de usuários e administrador com BCrypt
+- **Cadastro de usuários** - Com validação e máscaras para telefone e CPF
+- **Gerenciamento de estabelecimentos** - CRUD completo
+- **Integração com Google Maps API e Places API**
+- **Busca por categoria** - Adegas, Pagodes, Barzinhos, Eventos (raio de 2km)
+- **Geolocalização automática** - Com fallback para São Paulo
+- **Marcadores coloridos por categoria** - Vermelho, verde, azul, amarelo
+- **Auto-zoom do mapa** - Exibe todos os resultados automaticamente
+- **Menu dinâmico** - Adapta-se ao estado de autenticação
+- **Placeholder de carregamento** - Feedback visual enquanto mapa carrega
+- **Sistema de planos** - Três tiers de assinatura
+- **API REST com validações**
+- **Tratamento centralizado de erros**
 
 ## Arquitetura em camadas
 
@@ -97,6 +99,12 @@ Crie o banco de dados no MySQL:
 
 ```sql
 CREATE DATABASE boraroleta CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Adicionar coluna is_admin (executar após primeira inicialização)
+ALTER TABLE usuarios ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT FALSE;
+
+-- Criar índice para performance em autenticação
+CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
 ```
 
 As tabelas serão criadas automaticamente pelo Hibernate na primeira execução.
@@ -127,6 +135,44 @@ Este script:
 setenv.bat
 mvnw.cmd spring-boot:run
 ```
+
+## Sistema de Autenticação
+
+### Login de Administrador (Hard-coded)
+```
+Usuário: admin
+Senha: admin
+```
+
+O login de administrador é verificado diretamente no código, sem necessidade de cadastro no banco. Quando logado como admin, o menu exibe a opção "ADMIN".
+
+### Login de Usuários
+Usuários cadastrados no banco de dados podem fazer login com e-mail e senha. As senhas são criptografadas usando BCrypt (força 10).
+
+### Cadastro de Usuários
+O formulário de cadastro (`/views/Cadastro/cadastro.html`) inclui:
+- **Máscaras automáticas** para telefone `(XX) XXXXX-XXXX` e CPF `000.000.000-00`
+- **Validação em tempo real** dos campos
+- **Remoção das máscaras** antes do envio ao servidor
+
+### Menu Dinâmico
+O menu se adapta automaticamente ao estado de autenticação:
+- **Deslogado:** HOME | PLANOS | LOGIN
+- **Usuário comum:** HOME | PLANOS | Olá, [Nome]! [Sair]
+- **Administrador:** HOME | PLANOS | ADMIN | Olá, ADMIN! [Sair]
+
+### Arquitetura de Autenticação
+
+**Backend (Java/Spring Boot):**
+- `AuthController` - Endpoint `/api/auth/login`
+- `UsuarioService.autenticar()` - Valida credenciais e retorna `LoginResponseDTO`
+- Senhas criptografadas com BCrypt
+
+**Frontend (JavaScript):**
+- `auth.js` - Módulo global de autenticação com localStorage
+- `Login.js` - Gerencia formulário de login
+- `Cadastro.js` - Gerencia formulário de cadastro com máscaras
+- Persistência de sessão entre páginas
 
 ## Perfis ativos
 
@@ -244,30 +290,80 @@ boraRoleta/
   src/
     main/
       java/br/edu/senac/boraroleta/
-        controller/
-        service/
-        repository/
-        model/
-        dto/
-        exception/
-        config/
+        controller/        # Endpoints REST e páginas
+          AuthController.java
+          UsuarioController.java
+          EstabelecimentoController.java
+          HomeController.java
+        service/           # Lógica de negócio
+          UsuarioService.java
+          EstabelecimentoService.java
+        repository/        # Acesso a dados
+          UsuarioRepository.java
+          EstabelecimentoRepository.java
+        model/             # Entidades JPA
+          Usuario.java
+          Estabelecimento.java
+        dto/               # Data Transfer Objects
+          LoginDTO.java
+          LoginResponseDTO.java
+          UsuarioDTO.java
+          EstabelecimentoDTO.java
+        exception/         # Tratamento de erros
+          GlobalExceptionHandler.java
+          EntityNotFoundException.java
+          BusinessException.java
+        config/            # Configurações
+          DataSourceConfig.java
         BoraRoletaApplication.java
       resources/
         static/
-          css/
-          js/
-        templates/
+          css/             # Estilos
+            body.css
+            pagina-planos.css
+            templateCSS/
+              menu.css
+            Clientes/
+              login.css
+          js/              # Scripts
+            auth.js        # Sistema de autenticação
+            main.js        # Carregamento de componentes
+            apiMaps.js     # Integração Google Maps
+            buttons.js     # Gerenciamento de filtros
+            Clientes/
+              Login.js     # Formulário de login
+              Cadastro.js  # Formulário de cadastro com máscaras
+          views/           # Páginas HTML
+            home.html
+            Login/
+              login.html
+            Cadastro/
+              cadastro.html
+            templates/
+              menu.html    # Menu dinâmico
+              footer.html
+        templates/         # Templates Thymeleaf
+          index.html
+          planos.html
         application.properties
         application-prod.properties
         application-test.properties
     test/
       java/br/edu/senac/boraroleta/
-  .env.example
+  database_migration.sql   # Scripts SQL
+  .env                     # Variáveis de ambiente (não versionado)
+  .env.example             # Template de configuração
   pom.xml
   README.md
+  run.ps1                  # Script de execução Windows
   setenv.bat
   setenv.ps1
 ```
+
+## Documentação Adicional
+
+- [database_migration.sql](database_migration.sql) - Scripts de migração do banco de dados
+- [src/main/resources/static/js/README.md](src/main/resources/static/js/README.md) - Documentação dos scripts JavaScript
 
 ## Contribuicao
 
@@ -283,7 +379,25 @@ Este projeto esta licenciado sob a licenca MIT. Consulte o arquivo [LICENSE](LIC
 
 ## Autoria
 
-Equipe Bora Roleta - Trabalho acadêmico SENAC.
+Equipe Bora Roleta - Trabalho acadêmico SENAC 2025.
+
+## Changelog
+
+### v1.1 - 2025-11-23
+- Sistema completo de autenticação implementado
+- Login de administrador (admin/admin) e usuários do banco
+- Menu dinâmico baseado em permissões
+- Página de login com toggle de senha
+- Máscaras automáticas para telefone e CPF no cadastro
+- Placeholder de carregamento no mapa
+- Migração para campo is_admin no banco
+- Senhas criptografadas com BCrypt
+
+### v1.0 - 2025
+- Versão inicial com integração Google Maps
+- CRUD de usuários e estabelecimentos
+- Busca por categorias com marcadores coloridos
+- Sistema de planos
 
 ## Agradecimentos
 

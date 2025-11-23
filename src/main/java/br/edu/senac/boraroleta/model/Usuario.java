@@ -26,6 +26,9 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    @Column(name = "is_admin", nullable = false)
+    private boolean isAdmin = false;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -88,6 +91,13 @@ public class Usuario {
 
     public void setSenha(String senha){this.senha = senha;}
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

@@ -6,19 +6,24 @@ nav{
     height: 45px;
     justify-content: space-between;
     color: whitesmoke;
+    align-items: center;
+    padding: 0 10px;
 }
 .links{
-    margin-top: 9px;
-    width: 580px;
-    margin-right: 2%;
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    margin-left: 20px;
+    align-items: center;
 }
 
 .links  a{
     color: #F5E85D;
-    margin: 5%;
-    padding: 8px;
+    padding: 8px 12px;
     font-family: "Bebas Neue", sans-serif;
     font-size: 22px;
+    white-space: nowrap;
+    text-decoration: underline;
 }
 
 
@@ -27,4 +32,71 @@ nav{
     transition: 1s;
     background-color: #d8adf447;
 
+}
+
+/* Área do usuário (login ou info) */
+.user-area {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.link-login {
+    color: #F5E85D;
+    padding: 8px 12px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 22px;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.link-login:hover {
+    border-radius: 10%;
+    transition: 1s;
+    background-color: #d8adf447;
+}
+
+/* Estilos para informações do usuário logado */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: 20px;
+}
+
+.user-greeting {
+    color: #F5E85D;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #F5E85D;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.user-avatar:hover {
+    border-color: #d8adf4;
+    transition: border-color 0.3s;
+}
+
+.btn-logout {
+    background-color: #8B0000;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #A52A2A;
 }

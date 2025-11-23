@@ -1,5 +1,7 @@
 package br.edu.senac.boraroleta.service;
 
+import br.edu.senac.boraroleta.dto.LoginDTO;
+import br.edu.senac.boraroleta.dto.LoginResponseDTO;
 import br.edu.senac.boraroleta.dto.UsuarioDTO;
 import br.edu.senac.boraroleta.exception.BusinessException;
 import br.edu.senac.boraroleta.exception.EntityNotFoundException;
@@ -128,5 +130,30 @@ public class UsuarioService {
         }
         // sem filtros, retorna todos
         return listarTodos();
+    }
+
+    @Transactional(readOnly = true)
+    public LoginResponseDTO autenticar(LoginDTO loginDTO) {
+        // Verificar login de admin
+        if ("admin".equals(loginDTO.getEmail()) && "admin".equals(loginDTO.getSenha())) {
+            return new LoginResponseDTO(0L, "ADMIN", "admin", true);
+        }
+
+        // Buscar usuário por email
+        Usuario usuario = repository.findByEmail(loginDTO.getEmail())
+                .orElseThrow(() -> new BusinessException("Email ou senha inválidos"));
+
+        // Verificar senha
+        if (!passwordEncoder.matches(loginDTO.getSenha(), usuario.getSenha())) {
+            throw new BusinessException("Email ou senha inválidos");
+        }
+
+        // Retornar dados do usuário
+        return new LoginResponseDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.isAdmin()
+        );
     }
 }

@@ -85,6 +85,12 @@ const MapModule = (function () {
             return false;
         }
 
+        // Remover placeholder de carregamento
+        const loadingElement = mapElement.querySelector('.map-loading');
+        if (loadingElement) {
+            loadingElement.remove();
+        }
+
         map = new google.maps.Map(mapElement, {
             center: center,
             zoom: 15,
