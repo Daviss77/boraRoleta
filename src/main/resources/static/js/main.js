@@ -9,10 +9,24 @@
 /**
  * Carrega o componente de menu/navegação da aplicação.
  * Faz uma requisição para o template HTML e injeta no container 'menu'.
+ * Após carregar, inicializa o sistema de autenticação.
  */
 fetch("/views/templates/menu.html")
     .then(response => response.text())
-    .then(data => document.getElementById("menu").innerHTML = data)
+    .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        
+        // Carregar e inicializar o sistema de autenticação
+        const authScript = document.createElement('script');
+        authScript.src = '/js/auth.js';
+        authScript.onload = () => {
+            // Inicializar Auth após o script ser carregado
+            if (window.Auth) {
+                window.Auth.init();
+            }
+        };
+        document.head.appendChild(authScript);
+    })
     .catch(error => console.error('Erro ao carregar menu:', error));
 
 /**

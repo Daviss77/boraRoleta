@@ -1,7 +1,21 @@
-// Integração real com a API de usuários do backend
+/**
+ * @fileoverview Painel administrativo de gerenciamento de usuários.
+ * 
+ * Carrega lista de usuários da API, permite visualizar detalhes, buscar por nome/email
+ * e renderiza interface de administração.
+ * 
+ * @author Equipe Bora Roleta - SENAC 2025
+ * @version 1.0
+ */
 
+/** @type {Array<Object>} Lista de usuários carregados da API */
 let usuarios = [];
 
+/**
+ * Carrega todos os usuários da API REST.
+ * @async
+ * @returns {Promise<void>}
+ */
 async function carregarUsuarios() {
     const resp = await fetch('/api/usuarios');
     if (!resp.ok) {
