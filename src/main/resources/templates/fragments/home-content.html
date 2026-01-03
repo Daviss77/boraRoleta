@@ -1,0 +1,19 @@
+<div th:fragment="homeContent">
+
+    <h2 class="titles">Bora Roletá?</h2>
+
+    <div id="search">
+        <div class="child">
+            <button onclick="buscarAdegas()">Adegas</button>
+            <button onclick="buscarPagodes()">Pagodes</button>
+            <button onclick="buscarBarzinhos()">Barzinhos</button>
+            <button onclick="buscarEventos()">Eventos</button>
+            <button class="limpar" onclick="limparResultados()">Limpar</button>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="resultados" style="margin-top: 20px;"></div>
+
+</div>

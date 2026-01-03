@@ -7,13 +7,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/pagina-planos.css">
+    <link rel="stylesheet" th:href="@{/css/templateCSS/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/templateCSS/footer.css}">
     <title>PLANOS - DRINK CITY</title>
 </head>
 <body>
-<header>
-    <div id="menu"></div>
-</header>
-
+<div th:insert="fragments/menu :: menu"></div>
 <main class="planos-page">
     
     <h1 class="titulo-planos">PLANOS</h1>
@@ -83,7 +82,7 @@
     </div>
 </main>
 
-<div id="footer"></div>
+<div th:insert="fragments/footer :: footer"></div>
 
 <script>
 fetch("/views/templates/menu.html")

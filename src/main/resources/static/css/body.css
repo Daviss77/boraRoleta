@@ -2,13 +2,11 @@
 
 
 
-*{
-    /*border: 1px solid black;*/
+.home-container {
+    background-color: #2A2040;
     text-align: center;
-    box-sizing: border-box;
-    max-width: 100%;
-
 }
+
 html, body {
     background-color: #2A2040;
     margin: 0px;

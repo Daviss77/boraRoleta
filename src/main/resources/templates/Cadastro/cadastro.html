@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/Clientes/Cadastro/cadastro.css">
+    <title>Cadastro</title>
+</head>
+<body>
+
+<div class="mae">
+
+    <form th:action="@{/cadastro}" method="post">
+        <main class="container">
+
+            <div class="titulo">
+                <h1>Cadastro</h1>
+            </div>
+
+            <div class="caixas">
+                <input type="text"
+                       name="nome"
+                       placeholder="Nome completo"
+                       required>
+            </div>
+            <div class="caixas">
+                <input type="text" name="apelido" placeholder="Apelido (máx 20 caracteres)" maxlength="20" required>
+
+            </div>
+            <div class="caixas">
+                <input type="email"
+                       name="email"
+                       placeholder="E-mail"
+                       required>
+            </div>
+
+            <div class="caixas">
+                <input type="text"
+                       name="telefone"
+                       placeholder="(XX) XXXXX-XXXX"
+                       required>
+            </div>
+
+            <div class="caixas">
+                <input type="text"
+                       name="cpf"
+                       placeholder="000.000.000-00"
+                       required>
+            </div>
+
+            <div class="caixas">
+                <input type="password"
+                       name="senha"
+                       placeholder="Senha"
+                       required>
+            </div>
+
+            <div class="caixas">
+                <input type="password"
+                       name="confirmarSenha"
+                       placeholder="Confirmar senha"
+                       required>
+            </div>
+
+            <button type="submit" class="botao">Cadastrar</button>
+
+        </main>
+    </form>
+
+</div>
+
+<script th:src="@{/js/Clientes/ValidaCadastro.js}"></script>
+<script th:src="@{/js/Clientes/Cadastro.js}"></script>
+</body>
+</html>

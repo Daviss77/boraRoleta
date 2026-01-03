@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,42 +8,36 @@
 </head>
 <body>
 
-<form>
-    <main class="container">
-        <h1>login</h1>
+<form th:action="@{/login}" method="post">
+    <main class="login-page">
+        <div class="container">
 
+        <h1>Login</h1>
 
         <div class="input-box">
-
-            <input placeholder="Usuário" type="email">
-
-
+            <input name="username" type="email" placeholder="Usuário" required>
         </div>
 
         <div class="input-box">
-
-            <input id="senha" type="password" placeholder="Senha">
+            <input name="password" id="senha" type="password" placeholder="Senha" required>
             <span><img id="toggleSenha" src="/img/passwordImg/passwordBlock.png"
                        alt="Ilustração de olho não vendo a senha"> </span>
-
         </div>
+        <p th:if="${param.erro}" th:text="${erro}" style="color:red; margin-bottom: 10px;"></p>
 
         <div class="lembrar-senha">
-            <label>
-                <input type="checkbox">
-                Lembrar a Senha
-            </label>
-
-            <a href="@">Esqueci a Senha</a>
+            <a href="#">Esqueci a Senha</a>
         </div>
 
         <button type="submit" class="login">Entrar</button>
 
         <div class="sem-conta">
-            <p>Não tem uma conta? <a href="/views/Cadastro/cadastro.html">Cadastre-se</a></p>
+            <p>Não tem uma conta? <a th:href="@{/cadastro}">Cadastre-se</a></p>
+        </div>
         </div>
     </main>
 </form>
+
 
 <script src="/js/Clientes/Login.js"></script>
 </body>

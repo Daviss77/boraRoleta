@@ -26,9 +26,9 @@ public class HomeController {
      *
      * @return nome do template Thymeleaf "index"
      */
-    @GetMapping("/")
+    @GetMapping({"/", "/home", "/index"})
     public String home() {
-        return "index";
+        return "home";
     }
 
     /**
@@ -44,4 +44,10 @@ public class HomeController {
     public String planos() {
         return "planos";
     }
+
+    @GetMapping("/perfil")
+    public String perfil() {
+        return "Perfil/perfil";
+    }
 }
+

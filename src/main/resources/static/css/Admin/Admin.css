@@ -12,14 +12,6 @@ body {
     min-height: 100vh;
 }
 
-header {
-    background-color: #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 30px;
-    border-bottom: 3px solid #00f;
-}
 
 .logo {
     font-weight: bold;
@@ -108,8 +100,3 @@ button.delete {
     background-color: #f44336;
 }
 
-footer {
-    background-color: #ccc;
-    text-align: center;
-    padding: 10px;
-}

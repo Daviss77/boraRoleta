@@ -5,13 +5,15 @@
 }
 
 body{
+    min-height: 100vh;
+    background-color: #3f0f71;
+}
+
+.login-page{
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #3f0f71;
-    background-size: cover;
-    background-position: center;
 }
 
 .container {

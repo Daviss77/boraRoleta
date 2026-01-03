@@ -1,0 +1,21 @@
+<header th:fragment="menu" class="menu" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <nav>
+        <img src="" alt="Logo">
+
+        <div class="links">
+            <a th:href="@{/}">home</a>
+            <a th:href="@{/planos}">planos</a>
+
+            <a sec:authorize="!isAuthenticated()" th:href="@{/login}">login</a>
+
+            <a sec:authorize="isAuthenticated()"
+               th:href="@{/perfil}"
+               th:text="${usuarioLogado.nome}">
+            </a>
+
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">admin</a>
+
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}">logout</a>
+        </div>
+    </nav>
+</header>

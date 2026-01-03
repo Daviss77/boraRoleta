@@ -31,19 +31,5 @@ public class DataSourceConfig {
         return ds;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // libera POST no Postman
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()  // libera todos os endpoints
-                );
-
-        return http.build();
-    }
 }

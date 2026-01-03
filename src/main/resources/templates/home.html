@@ -6,15 +6,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <script th:src="@{/js/main.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/templateCSS/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/templateCSS/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/body.css}">
+    <link rel="stylesheet" th:href="@{/css/results.css}">
+
     <title>DRINK CITY</title>
 </head>
 <body>
-<header>
-    <div id="menu"></div>
-</header>
-<div id="home"></div>
-<div id="footer"></div>
+<div th:insert="fragments/menu :: menu"></div>
+
+<main class="home-container">
+    <div th:insert="fragments/home-content :: homeContent"></div>
+</main>
+
 
 <script th:src="@{/js/buttons.js}"></script>
 <script th:if="${@environment.getProperty('google.maps.api-key')}"
@@ -23,6 +29,7 @@
         defer>
 </script>
 
-<script th:src="@{/js/apiMaps.js}"></script>
+<<script th:src="@{/js/apiMaps.js}"></script>
+<div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

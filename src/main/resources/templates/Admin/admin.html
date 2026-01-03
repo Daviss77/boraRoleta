@@ -1,23 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/Admin/Admin.css" />
+    <link rel="stylesheet" th:href="@{/css/templateCSS/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/templateCSS/footer.css}">
 </head>
 
 <body>
-<header>
-    <div class="logo"></div>
-    <nav>
-        <a href="/">home</a>
-        <a href="/">planos</a>
-        <a href="/views/Login/login.html">perfil</a>
-        <a href="/views/Admin/admin.html">admin</a>
-    </nav>
-</header>
+<div th:insert="fragments/menu :: menu"></div>
 
 <main>
 
@@ -37,9 +32,7 @@
     </section>
 </main>
 
-<footer>
-    <p>Sobre nós</p> <p>₢ GRUPO NGS BY SENAC ₢</p> <p>Trabalho com fins acadêmicos</p>
-</footer>
+<div th:insert="fragments/footer :: footer"></div>
 
 <script src="/js/Admin/admin.js"></script>
 </body>
